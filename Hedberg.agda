@@ -14,7 +14,7 @@ isSet A = ∀ (x y : A) (p q : x ≡ y) → p ≡ q
 normalize : ∀ {ℓ : Level} {A : Set ℓ} {x y : A} → (r : x ≡ y) → (s : x ≡ y) → s ≡ r
 normalize refl refl = refl
 
--- Hedberg’s Theorem: decidable equality implies uniqueness of identity proofs
+-- Hedberg's Theorem: decidable equality implies uniqueness of identity proofs
 hedberg : ∀ {ℓ} {A : Set ℓ} →
   (dec : ∀ x y → Dec (x ≡ y)) →
   isSet A
@@ -22,6 +22,11 @@ hedberg dec x y p q with dec x y
 ... | yes r = trans (normalize r p) (sym (normalize r q))
 ... | no ¬r = ⊥-elim (¬r p)
 
+transport-eq : ∀ {ℓ} {A : Set ℓ} {x y : A} (r : x ≡ y) (s : x ≡ y) → s ≡ r
+transport-eq {ℓ} {A} {x} {y} r s =
+  J (λ x₁ y₁ p → (s₁ : x₁ ≡ y₁) → s₁ ≡ p)
+    (λ x₁ s₁ → sym s₁)
+    x y r s
 
 -- Injectivity of suc
 suc-is-injective : ∀ {m n : ℕ} → suc m ≡ suc n → m ≡ n

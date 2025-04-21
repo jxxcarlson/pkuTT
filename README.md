@@ -29,4 +29,8 @@ Proof that the type of natural numbers and the type booleans
 of booleans satisfy UIP.  Same for the unit type.  All these
 refer to Hedberg.agda
 
+## DecideableEqualityBool, DecideableEqualtyNat
+
+Show that Bool and the natural numbers satisfy Dec Bool, Dec N.
+
 

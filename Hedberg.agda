@@ -4,7 +4,7 @@ open import Level using (Level; zero)
 open import Data.Nat using (ℕ; zero; suc)
 open import Data.Empty using (⊥; ⊥-elim)
 open import Relation.Nullary using (Dec; yes; no; ¬_)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; sym; trans)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; sym; trans; J)
 
 -- A type is a set if all equality proofs between any two values are equal
 isSet : ∀ {ℓ} (A : Set ℓ) → Set ℓ
@@ -22,9 +22,10 @@ hedberg dec x y p q with dec x y
 ... | yes r = trans (normalize r p) (sym (normalize r q))
 ... | no ¬r = ⊥-elim (¬r p)
 
+
 -- Injectivity of suc
-cong-from-suc : ∀ {m n : ℕ} → suc m ≡ suc n → m ≡ n
-cong-from-suc refl = refl
+suc-is-injective : ∀ {m n : ℕ} → suc m ≡ suc n → m ≡ n
+suc-is-injective refl = refl
 
 -- Decidable equality for ℕ
 decEqℕ : ∀ (m n : ℕ) → Dec (m ≡ n)
@@ -33,7 +34,7 @@ decEqℕ zero (suc n) = no (λ ())
 decEqℕ (suc m) zero = no (λ ())
 decEqℕ (suc m) (suc n) with decEqℕ m n
 ... | yes p = yes (cong suc p)
-... | no ¬p = no (λ q → ¬p (cong-from-suc q))
+... | no ¬p = no (λ q → ¬p (suc-is-injective q))
 
 -- Finally: ℕ is a set
 isSetℕ : isSet ℕ

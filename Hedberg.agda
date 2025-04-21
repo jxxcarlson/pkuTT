@@ -1,48 +1,37 @@
+{-# OPTIONS --without-K #-}
+
 module Hedberg where
 
-open import Level using (Level; zero)
-open import Data.Nat using (ℕ; zero; suc)
-open import Data.Empty using (⊥; ⊥-elim)
+open import Level using (Level; _⊔_)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; sym; trans)
 open import Relation.Nullary using (Dec; yes; no; ¬_)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; sym; trans; J)
+open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Empty using (⊥; ⊥-elim)
 
--- A type is a set if all equality proofs between any two values are equal
+-- Definition of isSet: the type has at most one proof of equality between any two terms
 isSet : ∀ {ℓ} (A : Set ℓ) → Set ℓ
-isSet A = ∀ (x y : A) (p q : x ≡ y) → p ≡ q
+isSet A = ∀ x y → ∀ (p q : x ≡ y) → p ≡ q
 
--- Helper: reduce all identity proofs to refl
-normalize : ∀ {ℓ : Level} {A : Set ℓ} {x y : A} → (r : x ≡ y) → (s : x ≡ y) → s ≡ r
-normalize refl refl = refl
+-- Normalize a proof of identity to a canonical representative (e.g., the one from dec x y)
+normalize : ∀ {ℓ} {A : Set ℓ} →
+            (dec : ∀ x y → (x ≡ y) ⊎ ¬ (x ≡ y)) →
+            ∀ {x y : A} → (p : x ≡ y) → x ≡ y
+normalize dec {x} {y} p with dec x y
+... | inj₁ e = e
+... | inj₂ not = ⊥-elim (not p)
 
--- Hedberg's Theorem: decidable equality implies uniqueness of identity proofs
+-- Show that normalize always returns the same result, regardless of input proof
+normalize-constant : ∀ {ℓ} {A : Set ℓ}
+  (dec : ∀ x y → (x ≡ y) ⊎ ¬ (x ≡ y)) →
+  ∀ {x y : A} (p q : x ≡ y) → normalize dec p ≡ normalize dec q
+normalize-constant dec {x} {y} p q with dec x y
+... | inj₁ e = refl
+... | inj₂ not = ⊥-elim (not p)
+
+-- Hedberg’s Theorem: decidable equality implies A is a set
 hedberg : ∀ {ℓ} {A : Set ℓ} →
-  (dec : ∀ x y → Dec (x ≡ y)) →
-  isSet A
-hedberg dec x y p q with dec x y
-... | yes r = trans (normalize r p) (sym (normalize r q))
-... | no ¬r = ⊥-elim (¬r p)
-
-transport-eq : ∀ {ℓ} {A : Set ℓ} {x y : A} (r : x ≡ y) (s : x ≡ y) → s ≡ r
-transport-eq {ℓ} {A} {x} {y} r s =
-  J (λ x₁ y₁ p → (s₁ : x₁ ≡ y₁) → s₁ ≡ p)
-    (λ x₁ s₁ → sym s₁)
-    x y r s
-
--- Injectivity of suc
-suc-is-injective : ∀ {m n : ℕ} → suc m ≡ suc n → m ≡ n
-suc-is-injective refl = refl
-
--- Decidable equality for ℕ
-decEqℕ : ∀ (m n : ℕ) → Dec (m ≡ n)
-decEqℕ zero zero = yes refl
-decEqℕ zero (suc n) = no (λ ())
-decEqℕ (suc m) zero = no (λ ())
-decEqℕ (suc m) (suc n) with decEqℕ m n
-... | yes p = yes (cong suc p)
-... | no ¬p = no (λ q → ¬p (suc-is-injective q))
-
--- Finally: ℕ is a set
-isSetℕ : isSet ℕ
-isSetℕ = hedberg decEqℕ
-
-
+          (∀ x y → (x ≡ y) ⊎ ¬ (x ≡ y)) →
+          isSet A
+hedberg dec x y p q =
+  trans (sym (normalize-constant dec p refl))
+        (normalize-constant dec q refl)

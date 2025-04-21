@@ -2,6 +2,10 @@
 
 Annotated list of Agda programs, all which sucessfully type-check using Agda version 2.8.0-47e7dcb.
 
+# Postulate.agda
+
+We can work with postulated functions, but computation with them may be "stuck."
+
 # Sets and related matters
 
 ## K

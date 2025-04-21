@@ -1,6 +1,6 @@
 # Introduction
 
-Annoted list of Agda programs
+Annotated list of Agda programs, all which sucessfully type-check using Agda version 2.8.0-47e7dcb.
 
 # Sets and related matters
 
@@ -18,5 +18,11 @@ equality also satisfies uniqueness of identity proofs
 
 A demonstration of the fact that the function `normalize` fails
 to compile outside of the context of decidable equality.
+
+## HedbergNat, HedbergBool, HedbergBool
+
+Proof that the type of natural numbers and the type booleans
+of booleans satisfy UIP.  Same for the unit type.  All these
+refer to Hedberg.agda
 
 

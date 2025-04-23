@@ -1,0 +1,64 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+
+\title{Summary of Hofmann and Streicher's Groupoid Model}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Overview}
+
+In their seminal 1994 paper, \emph{The groupoid model refutes uniqueness of identity proofs}, Martin Hofmann and Thomas Streicher constructed a model of intensional Martin-L\"of Type Theory (MLTT) in which identity types are interpreted as hom-sets in groupoids. This model provides a semantic justification for the fact that certain principles, such as function extensionality and uniqueness of identity proofs (UIP), are \emph{not derivable} in MLTT.
+
+\section*{The Groupoid Interpretation}
+
+In the groupoid model:
+\begin{itemize}
+  \item A type $A$ is interpreted as a \emph{groupoid} $\mathcal{A}$.
+  \item A term $a : A$ is interpreted as an \emph{object} $a \in \mathcal{A}$.
+  \item The identity type $x =_A y$ is interpreted as the set of \emph{isomorphisms} (i.e., morphisms in the groupoid) from $x$ to $y$, denoted $\mathrm{Hom}_{\mathcal{A}}(x, y)$.
+\end{itemize}
+
+This means that identity types can have multiple distinct inhabitants, corresponding to different isomorphisms between objects.
+
+\section*{Failure of UIP}
+
+Because identity types are interpreted as hom-sets, and hom-sets in general groupoids can contain multiple distinct morphisms, the model validates the existence of multiple distinct proofs of equality. That is,
+\[
+  x = y \quad \text{can have} \quad p \neq q \in \mathrm{Hom}_{\mathcal{A}}(x, y),
+\]
+which refutes UIP:
+\[
+  \text{UIP:} \quad \forall x, y : A,\ \forall p, q : x = y,\ p = q.
+\]
+
+\section*{Failure of Function Extensionality}
+
+Functions between types are interpreted as functors between groupoids. That is:
+\begin{itemize}
+  \item A function $f : A \to B$ is interpreted as a functor $F : \mathcal{A} \to \mathcal{B}$.
+  \item An equality $f = g$ between functions corresponds to a \emph{natural isomorphism} between functors.
+\end{itemize}
+
+Even if two functors $F, G : \mathcal{A} \to \mathcal{B}$ are pointwise isomorphic (i.e., $F(a) \cong G(a)$ for all $a$), they may not be \emph{naturally} isomorphic, because naturality requires a coherent family of morphisms:
+\[
+  \forall f : a \to a', \quad G(f) \circ \eta_a = \eta_{a'} \circ F(f).
+\]
+
+Therefore, the implication
+\[
+  \forall x : A,\ f(x) = g(x) \Rightarrow f = g
+\]
+is \emph{not valid} in the groupoid model. Thus, \textbf{function extensionality is not derivable} in MLTT.
+
+\section*{Conclusion}
+
+Hofmann and Streicher's groupoid model provides a powerful demonstration that certain extensional principles, like function extensionality and UIP, are not provable from the core rules of intensional MLTT. This proves their \emph{independence} from the theory and establishes that if one wants these principles, they must be \emph{postulated} or derived from stronger assumptions such as the univalence axiom.
+
+\end{document}
+

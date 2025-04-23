@@ -1,7 +1,9 @@
 
-# Compiler
+# Bash commmands
+- agda: run agda on a file. If `agda Foo.agda` produces output,
+the output describes the typecheck errors. If there is no output,
+that means tha the file compiles, i.e., there are no typecheck errors.
 
-When working with .agda files and suggesting changes, always run the agda compiler on the code to see if the changes work.
+# Workflow
 
-After a change to the code is made, run the agda compiler on it to see if it compiles.  If it does not, analyze the error message to suggest further changes.
-
+- When a code change is accepted, always run `agda` on the fila and take the output, if any, as input for the next round of analysis by Claude.  Do this automatically.

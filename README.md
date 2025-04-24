@@ -14,6 +14,14 @@ Sketch of Hoffman-Strieicher's construction of a groupoid model for MLTT proving
 
 # Agda Files
 
+## Cubical
+
+### CubicalBasics
+
+- Examples of paths
+- Define funext from scratch
+- Show that the universe of small types is not a Set
+
 ## Postulate.agda
 
 We can work with postulated functions, but computation with them may be "stuck."

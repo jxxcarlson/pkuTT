@@ -2,3 +2,4 @@
 .vscode/
 clean.sh
 bad/
+.DS_Store

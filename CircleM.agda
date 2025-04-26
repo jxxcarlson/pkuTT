@@ -29,6 +29,41 @@ helix : S¹ → Set
 helix base = ℤ
 helix (loop i) = sucPathℤ i
 
+winding : base ≡ base  → ℤ  
+winding p = transport (λ i → helix (p i)) (pos 0)
+
+_ : winding loop ≡ pos 1
+_ = refl
+
+_ : winding (loop ∙ loop) ≡ pos 2
+_ = refl
+
+_ : winding (sym loop) ≡ negsuc 0
+_ = refl
+
+
+
+-- 2. Going around the loop twice (corresponds to +2)
+loopTwice : ΩS¹
+loopTwice = loop ∙ loop
+
+-- 3. Going around the loop in the opposite direction (corresponds to -1)
+loopBackwards : ΩS¹
+loopBackwards = sym loop
+
+-- 4. Let's compute what happens to an integer when we go around the loop
+-- Starting with 0 and going around once should give us 1
+computeOnce : transport (λ i → helix (loop i)) (pos 0) ≡ pos 1
+computeOnce = refl
+
+-- Going around twice should give us 2
+computeTwice : transport (λ i → helix (loopTwice i)) (pos 0) ≡ pos 2
+computeTwice = refl
+
+-- Going backwards should give us -1
+computeBackwards : transport (λ i → helix (loopBackwards i)) (pos 0) ≡ negsuc 0
+computeBackwards = refl
+
 
 
 

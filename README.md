@@ -6,25 +6,33 @@
 
 # PDF Files
 
-## hoffman-streicher-sketch
+## hoffman-streicher-sketch.pdf
 
-Sketch of Hoffman-Strieicher's construction of a groupoid model for MLTT proving
+Sketch of Hoffman-Strieicher's construction of a groupoid model for MLTT proving independence of UIP and Univalence relative to MILTT.
 
-    - 
+# Agda Files
+
+## Postulate
+
+### Stuck.agda
+
+Examples of stuck computations for N.
+
+### UAStuckExampleFixed.agda
+
+Using ua (univalence) to transport a Boolean value along a path fails to compute.
+
+
 
 # Agda Files
 
 ## Cubical
 
-### CubicalBasics
+### CubicalBasics.agda
 
 - Examples of paths
 - Define funext from scratch
 - Show that the universe of small types is not a Set
-
-## Postulate.agda
-
-We can work with postulated functions, but computation with them may be "stuck."
 
 ## Sets and related matters
 

@@ -32,6 +32,12 @@ funExt : ∀ {A B : Set} (f g : A → B) →
          Path (A → B) f g
 funExt f g p i x = p x i
 
+
+-- The univalence axiom is provable (defined in Cubical.Foundations.Univalence)
+univalenceExample :
+  ∀ {A B : Set} → (e : A ≃ B) → Path (Set) A B
+univalenceExample = ua
+
 -- The not equivalence on Bool
 notEquiv : Bool ≃ Bool
 notEquiv = isoToEquiv (iso not not not-involutive not-involutive)
@@ -71,7 +77,14 @@ Set-is-not-set isSet = false≢true (transport-path-eq path-eq)
     false≢true : Path Bool true false → ⊥
     false≢true p = transport (λ i → if p i then Bool else ⊥) false
 
-univalenceExample :
-  ∀ {A B : Set} → (e : A ≃ B) → Path (Set) A B
-univalenceExample = ua
 
+
+-- HITs Set-is-not-set
+
+open import Cubical.HITs.S1
+
+-- base : S¹
+-- loop : PathP (λ _ → S¹) base base
+
+loopTwice : Path S¹ base base
+loopTwice = loop ∙ loop

@@ -2,7 +2,7 @@
 
 module MortbergLecture1 where
 
-open import Cubical.Foundations.Prelude hiding (refl; funExt)
+open import Cubical.Foundations.Prelude hiding (refl; funExt; sym)
 
 variable
     ℓ : Level
@@ -24,6 +24,9 @@ ap f p i = f (p i)
 --funExt (function extensionality) from scratch
 funExt : { f g : A → B } → (p : (x : A) → f x ≡ g x) → f ≡ g
 funExt p i x = p x i
+
+sym : { x y : A } → x ≡ y → y ≡ x
+sym p i = p (~ i)
 
 
 

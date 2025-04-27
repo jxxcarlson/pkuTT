@@ -28,4 +28,4 @@ example-equiv : Equiv Bool Bool
 example-equiv = equiv not not notNotId notNotId
 
 example-transport : Bool → Bool
-example-transport b = transport (ua example-equiv) b
+example-transport b = transport (ua example-equiv) b 

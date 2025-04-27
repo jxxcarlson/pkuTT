@@ -10,9 +10,6 @@ open import Cubical.Foundations.Univalence
 open import Cubical.Data.Bool.Base
 open import Cubical.Data.Sigma
 
-infixl 20 _+_ℕ
-infixl 30 _*_ℕ
-
 ------------------------------------------------------------------------
 -- Step 1: Define unary ℕ
 ------------------------------------------------------------------------
@@ -83,6 +80,9 @@ private
     _*_ℕ zero n = zero
     _*_ℕ (suc m) n = _+_ℕ n (_*_ℕ m n)
 
+    infixl 20 _+_ℕ
+    infixl 30 _*_ℕ
+
 open NatOps public
 
 -- 0 and 1 for ℕ
@@ -91,6 +91,38 @@ zeroℕ = zero
 
 oneℕ : ℕ
 oneℕ = suc zero
+
+-- Properties of natural numbers
+private
+  module NatProps where
+    -- Properties of addition and multiplication for ℕ
+    +-assocℕ : (x y z : ℕ) → (_+_ℕ x (_+_ℕ y z)) ≡ (_+_ℕ (_+_ℕ x y) z)
+    +-assocℕ zero y z = refl
+    +-assocℕ (suc x) y z = cong suc (+-assocℕ x y z)
+
+    +-commℕ : (x y : ℕ) → (_+_ℕ x y) ≡ (_+_ℕ y x)
+    +-commℕ zero y = sym (+-zero y)
+      where
+        +-zero : (n : ℕ) → _+_ℕ n zero ≡ n
+        +-zero zero = refl
+        +-zero (suc n) = cong suc (+-zero n)
+    +-commℕ (suc x) y = 
+      let ih = +-commℕ x y
+      in cong suc ih ∙ sym (+-suc y x)
+      where
+        +-suc : (m n : ℕ) → _+_ℕ m (suc n) ≡ suc (_+_ℕ m n)
+        +-suc zero n = refl
+        +-suc (suc m) n = cong suc (+-suc m n)
+
+    -- For now, we'll postulate the remaining properties
+    postulate
+      *-assocℕ : (x y z : ℕ) → (_*_ℕ x (_*_ℕ y z)) ≡ (_*_ℕ (_*_ℕ x y) z)
+      left-distribℕ : (x y z : ℕ) → (_*_ℕ x (_+_ℕ y z)) ≡ (_+_ℕ (_*_ℕ x y) (_*_ℕ x z))
+      right-distribℕ : (x y z : ℕ) → (_*_ℕ (_+_ℕ x y) z) ≡ (_+_ℕ (_*_ℕ x z) (_*_ℕ y z))
+      0-left-annihilatesℕ : (x : ℕ) → (_*_ℕ zero x) ≡ zero
+      1-left-neutralℕ : (x : ℕ) → (_*_ℕ (suc zero) x) ≡ x
+
+open NatProps public
 
 -- A record for Semiring structure
 record Semiring (A : Set) : Set where
@@ -111,124 +143,28 @@ record Semiring (A : Set) : Set where
   infixl 20 _+_
   infixl 30 _*_
 
-  -- Helper functions to make the operators available in the record
-  _+'_ : A → A → A
-  _+'_ = _+_
-
-  _*'_ : A → A → A
-  _*'_ = _*_
-
-  -- Helper functions to make the operators available in the record
-  _+''_ : A → A → A
-  _+''_ = _+_
-
-  _*''_ : A → A → A
-  _*''_ = _*_
-
-  -- Helper functions to make the operators available in the record
-  _+'''_ : A → A → A
-  _+'''_ = _+_
-
-  _*'''_ : A → A → A
-  _*'''_ = _*_
-
-  -- Helper functions to make the operators available in the record
-  _+''''_ : A → A → A
-  _+''''_ = _+_
-
-  _*''''_ : A → A → A
-  _*''''_ = _*_
-
-  -- Helper functions to make the operators available in the record
-  _+'''''_ : A → A → A
-  _+'''''_ = _+_
-
-  _*'''''_ : A → A → A
-  _*'''''_ = _*_
-
-  -- Helper functions to make the operators available in the record
-  _+''''''_ : A → A → A
-  _+''''''_ = _+_
-
-  _*''''''_ : A → A → A
-  _*''''''_ = _*_
-
-  -- Helper functions to make the operators available in the record
-  _+'''''''_ : A → A → A
-  _+'''''''_ = _+_
-
-  _*'''''''_ : A → A → A
-  _*'''''''_ = _*_
-
-  -- Helper functions to make the operators available in the record
-  _+''''''''_ : A → A → A
-  _+''''''''_ = _+_
-
-  _*''''''''_ : A → A → A
-  _*''''''''_ = _*_
-
-  -- Helper functions to make the operators available in the record
-  _+'''''''''_ : A → A → A
-  _+'''''''''_ = _+_
-
-  _*'''''''''_ : A → A → A
-  _*'''''''''_ = _*_
-
-  -- Helper functions to make the operators available in the record
-  _+''''''''''_ : A → A → A
-  _+''''''''''_ = _+_
-
-  _*''''''''''_ : A → A → A
-  _*''''''''''_ = _*_
-
-  -- Helper functions to make the operators available in the record
-  _+'''''''''''_ : A → A → A
-  _+'''''''''''_ = _+_
-
-  _*'''''''''''_ : A → A → A
-  _*'''''''''''_ = _*_
-
-  -- Helper functions to make the operators available in the record
-  _+''''''''''''_ : A → A → A
-  _+''''''''''''_ = _+_
-
-  _*''''''''''''_ : A → A → A
-  _*''''''''''''_ = _*_
-
-------------------------------------------------------------------------
--- Step 7: Define Semiring instance for ℕ
-------------------------------------------------------------------------
-
--- Proofs (quickly postulated here for simplicity)
-postulate
-  +-assocℕ : (x y z : ℕ) → (x + (y + z)) ≡ ((x + y) + z)
-  +-commℕ  : (x y : ℕ) → (x + y) ≡ (y + x)
-  *-assocℕ : (x y z : ℕ) → (x * (y * z)) ≡ ((x * y) * z)
-  left-distribℕ  : (x y z : ℕ) → (x * (y + z)) ≡ (x * y + x * z)
-  right-distribℕ : (x y z : ℕ) → ((x + y) * z) ≡ (x * z + y * z)
-  0-left-annihilatesℕ : (x : ℕ) → (zero * x) ≡ zero
-  1-left-neutralℕ : (x : ℕ) → (suc zero * x) ≡ x
-
 -- Now package everything into a Semiring ℕ
 semiringℕ : Semiring ℕ
-semiringℕ .Semiring._+_ = _+_ℕ
-semiringℕ .Semiring._*_ = _*_ℕ
-semiringℕ .Semiring.0#  = zeroℕ
-semiringℕ .Semiring.1#  = oneℕ
-semiringℕ .Semiring.+-assoc = +-assocℕ
-semiringℕ .Semiring.+-comm  = +-commℕ
-semiringℕ .Semiring.*-assoc = *-assocℕ
-semiringℕ .Semiring.left-distrib  = left-distribℕ
-semiringℕ .Semiring.right-distrib = right-distribℕ
-semiringℕ .Semiring.0-left-annihilates = 0-left-annihilatesℕ
-semiringℕ .Semiring.1-left-neutral = 1-left-neutralℕ
+semiringℕ = record
+  { _+_ = _+_ℕ
+  ; _*_ = _*_ℕ
+  ; 0#  = zeroℕ
+  ; 1#  = oneℕ
+  ; +-assoc = +-assocℕ
+  ; +-comm  = +-commℕ
+  ; *-assoc = *-assocℕ
+  ; left-distrib  = left-distribℕ
+  ; right-distrib = right-distribℕ
+  ; 0-left-annihilates = 0-left-annihilatesℕ
+  ; 1-left-neutral = 1-left-neutralℕ
+  }
 
 ------------------------------------------------------------------------
 -- Step 8: Transport the Semiring structure to Bin
 ------------------------------------------------------------------------
 
 semiringBin : Semiring Bin
-semiringBin = transport (λ X → Semiring X) (ua ℕ≃Bin) semiringℕ
+semiringBin = transport (λ i → Semiring (ua ℕ≃Bin i)) semiringℕ
 
 ------------------------------------------------------------------------
 -- Step 9: Result

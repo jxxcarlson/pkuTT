@@ -17,6 +17,11 @@ Sketch of Hoffman-Strieicher's construction of a groupoid model for MLTT proving
 - Basic: 
 - PlusIdentityRight: show that n + 0 = n for all n : N
 
+## UA
+
+- EvenTransport: transports `even : ℕ → Bool` using univalence
+and the equivalence `ℕ≃Bin` to a function `evenBin : Bin → Bool`.  The functions `encode-decode` and `decode-encode` which show that the `encode`-`decode` pair form an equivalence for `ℕ` and `Bin` are postulated but could be proved. 
+
 
 ## Postulate
 

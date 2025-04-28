@@ -46,20 +46,7 @@ funExt p i x = p x i
 sym : { x y : A } → x ≡ y → y ≡ x
 sym p i = p (~ i)
 
--- Path concatenation examples
--- Using the library's _∙_ operator
-pathConcatExample : true ≡ true
-pathConcatExample = nonConstPath ∙ sym nonConstPath
 
--- Manual implementation of path concatenation
-pathConcat : {A : Set} {x y z : A} → x ≡ y → y ≡ z → x ≡ z
-pathConcat p q i = hcomp (λ j → λ { (i = i0) → x
-                                  ; (i = i1) → q j })
-                         (p i)
-
--- Example using manual concatenation
-pathConcatExample2 : true ≡ true
-pathConcatExample2 = pathConcat nonConstPath (sym nonConstPath)
 
 
 

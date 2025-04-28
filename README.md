@@ -19,9 +19,10 @@ Sketch of Hoffman-Strieicher's construction of a groupoid model for MLTT proving
 
 ## UA
 
-- EvenTransport: transports `even : ℕ → Bool` using univalence
+- *EvenTransport*: transports `even : ℕ → Bool` using univalence
 and the equivalence `ℕ≃Bin` to produce a function `evenBin : Bin → Bool`.  The functions `encode-decode` and `decode-encode` which show that the `encode`-`decode` pair form an equivalence for `ℕ` and `Bin` are postulated but could be proved. Normaling `testThree` and `testFour` yields the expected values `false` and `true`.
-- EvenTransportNonCubical does the same work but does not use cubical, instead postulating univalence.  As a result, normalizing `testThree` and `testFour` produce normal but (uninformative) non-canonical forms.
+- *EvenTransportNonCubical* does the same work but does not use cubical, instead postulating univalence.  As a result, normalizing `testThree` and `testFour` produce normal but (uninformative) non-canonical forms.
+- *SemiRingTransport*: `ℕ` is a semiring, meaning
 
 
 ## Postulate

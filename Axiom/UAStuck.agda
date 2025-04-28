@@ -20,12 +20,12 @@ postulate
 transport : {A B : Set} → (p : A ≡ B) → A → B
 transport refl x = x
 
-notNotId : (b : Bool) → not (not b) ≡ b
-notNotId true  = refl
-notNotId false = refl
+isInvolution : (b : Bool) → not (not b) ≡ b
+isInvolution true  = refl
+isInvolution false = refl
 
-example-equiv : Equiv Bool Bool
-example-equiv = equiv not not notNotId notNotId
+ourEquiv : Equiv Bool Bool
+ourEquiv = equiv not not isInvolution isInvolution
 
-example-transport : Bool → Bool
-example-transport b = transport (ua example-equiv) b  
+ourTransport : Bool → Bool
+ourTransport b = transport (ua ourEquiv) b  

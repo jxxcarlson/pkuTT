@@ -25,6 +25,10 @@ pathExample A a b p = p i0  -- evaluates to `a`
 pathId : ∀ {A : Set} (a : A) → Path A a a
 pathId a i = a
 
+-- A path in Bool from false to true
+falseToTrue : Path Bool false true
+falseToTrue i = primPOr i (λ _ → false) (λ _ → true)
+
 -- Function extensionality is a library function,
 -- but we can hide it and implement it ourselves:
 funExt : ∀ {A B : Set} (f g : A → B) →

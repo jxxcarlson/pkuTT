@@ -25,6 +25,9 @@ t2 = double 3
 t3 : ℕ
 t3 = foo (double 3)
 
+t4 : ℕ
+t4 = double (foo 3)
+
 
 
  

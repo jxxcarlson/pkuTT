@@ -2,9 +2,9 @@
 
 -- /Users/carlson/dev/agda/cubical/Cubical/Foundations/Prelude.agda
 
-module CubicalBasic where
+module Cubical.Basic where
 
-open import Cubical.Core.Everything
+
 open import Cubical.Foundations.Prelude hiding (funExt)
 open import Cubical.Foundations.Equiv
 open import Cubical.Foundations.Univalence

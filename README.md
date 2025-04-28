@@ -1,6 +1,6 @@
 # Introduction
 
-- PDF files
+
 
 - Annotated list of Agda programs, all which sucessfully type-check using Agda version 2.8.0-47e7dcb.
 
@@ -11,6 +11,12 @@
 Sketch of Hoffman-Strieicher's construction of a groupoid model for MLTT proving independence of UIP and Univalence relative to MILTT.
 
 # Agda Files
+
+## Cubical
+
+- Basic: 
+- PlusIdentityRight: show that n + 0 = n for all n : N
+
 
 ## Postulate
 
@@ -26,7 +32,7 @@ Using ua (univalence) to transport a Boolean value along a path fails to compute
 
 # Agda Files
 
-## Cubical
+
 
 ### CubicalBasics.agda
 

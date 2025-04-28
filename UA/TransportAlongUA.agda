@@ -1,23 +1,17 @@
 {-# OPTIONS --without-K #-}
 
-module TransportAlongUA where
+module UA.TransportAlongUA where
 
-open import Agda.Primitive
-open import Relation.Binary.PropositionalEquality
-open import Data.Bool
-open import Data.Nat
+open import Cubical.Core.Everything
+open import Cubical.Foundations.Prelude
+open import Cubical.Foundations.Equiv
+open import Cubical.Data.Bool.Base
+open import Cubical.Foundations.Univalence
+open import Cubical.Foundations.Isomorphism
+
 
 -- Proper Equivalence
-record Equiv (A B : Set) : Set where
-  constructor equiv
-  field
-    to    : A → B
-    from  : B → A
-    left  : (b : B) → to (from b) ≡ b
-    right : (a : A) → from (to a) ≡ a
 
-postulate
-  ua : {A B : Set} → Equiv A B → A ≡ B
 
 transport : {A B : Set} → (p : A ≡ B) → A → B
 transport refl x = x

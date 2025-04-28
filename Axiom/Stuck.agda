@@ -1,4 +1,4 @@
-module Stuck where
+module Axiom.Stuck where
 
 open import Data.Nat
 
@@ -11,11 +11,20 @@ double n = n + n
 postulate
     foo : ℕ → ℕ
 
+t0 : ℕ
+t0 = inc 0
+
 t1 : ℕ
 t1 = foo (inc 0)
 
 t2 : ℕ
-t2 = inc (foo 0)
+t2 = double 3
 
 
 
+t3 : ℕ
+t3 = foo (double 3)
+
+
+
+ 

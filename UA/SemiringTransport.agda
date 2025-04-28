@@ -100,27 +100,106 @@ private
     +-assocℕ zero y z = refl
     +-assocℕ (suc x) y z = cong suc (+-assocℕ x y z)
 
+    -- Helper lemmas for addition
+    +-zero : (n : ℕ) → _+_ℕ n zero ≡ n
+    +-zero zero = refl
+    +-zero (suc n) = cong suc (+-zero n)
+
+    +-zero-right : (n : ℕ) → _+_ℕ zero n ≡ n
+    +-zero-right n = refl
+
+    +-suc : (m n : ℕ) → _+_ℕ m (suc n) ≡ suc (_+_ℕ m n)
+    +-suc zero n = refl
+    +-suc (suc m) n = cong suc (+-suc m n)
+
+    +-suc-right : (m n : ℕ) → _+_ℕ (suc m) n ≡ suc (_+_ℕ m n)
+    +-suc-right m n = refl
+
+    -- Additional helper lemmas
+    +-cong-left : {m n p : ℕ} → m ≡ n → _+_ℕ m p ≡ _+_ℕ n p
+    +-cong-left {m} {n} {p} m≡n = cong (λ x → _+_ℕ x p) m≡n
+
+    +-cong-right : {m n p : ℕ} → n ≡ p → _+_ℕ m n ≡ _+_ℕ m p
+    +-cong-right {m} {n} {p} n≡p = cong (λ x → _+_ℕ m x) n≡p
+
+    +-assoc-left : (x y z : ℕ) → _+_ℕ (_+_ℕ x y) z ≡ _+_ℕ x (_+_ℕ y z)
+    +-assoc-left x y z = sym (+-assocℕ x y z)
+
+    +-assoc-right : (x y z : ℕ) → _+_ℕ x (_+_ℕ y z) ≡ _+_ℕ (_+_ℕ x y) z
+    +-assoc-right x y z = +-assocℕ x y z
+
     +-commℕ : (x y : ℕ) → (_+_ℕ x y) ≡ (_+_ℕ y x)
-    +-commℕ zero y = sym (+-zero y)
-      where
-        +-zero : (n : ℕ) → _+_ℕ n zero ≡ n
-        +-zero zero = refl
-        +-zero (suc n) = cong suc (+-zero n)
-    +-commℕ (suc x) y = 
-      let ih = +-commℕ x y
-      in cong suc ih ∙ sym (+-suc y x)
-      where
-        +-suc : (m n : ℕ) → _+_ℕ m (suc n) ≡ suc (_+_ℕ m n)
-        +-suc zero n = refl
-        +-suc (suc m) n = cong suc (+-suc m n)
+    +-commℕ m zero = +-zero m
+    +-commℕ m (suc n) = 
+      _+_ℕ m (suc n)
+        ≡⟨ +-suc m n ⟩
+      suc (_+_ℕ m n)
+        ≡⟨ cong suc (+-commℕ m n) ⟩
+      suc (_+_ℕ n m)
+        ≡⟨ sym (+-suc-right n m) ⟩
+      _+_ℕ (suc n) m
+      ∎
+
+    +-swap : (x y z : ℕ) → _+_ℕ x (_+_ℕ y z) ≡ _+_ℕ y (_+_ℕ x z)
+    +-swap x y z = 
+      _+_ℕ x (_+_ℕ y z)
+        ≡⟨ +-assoc-right x y z ⟩
+      _+_ℕ (_+_ℕ x y) z
+        ≡⟨ cong (λ w → _+_ℕ w z) (+-commℕ x y) ⟩
+      _+_ℕ (_+_ℕ y x) z
+        ≡⟨ +-assoc-left y x z ⟩
+      _+_ℕ y (_+_ℕ x z)
+      ∎
+
+    +-assoc-middle : (x y z w : ℕ) → _+_ℕ x (_+_ℕ y (_+_ℕ z w)) ≡ _+_ℕ x (_+_ℕ (_+_ℕ y z) w)
+    +-assoc-middle x y z w = 
+      _+_ℕ x (_+_ℕ y (_+_ℕ z w))
+        ≡⟨ cong (_+_ℕ x) (+-assoc-right y z w) ⟩
+      _+_ℕ x (_+_ℕ (_+_ℕ y z) w)
+      ∎
+
+    -- Multiplication properties
+    *-distrib-+ : (x y z : ℕ) → _*_ℕ x (_+_ℕ y z) ≡ _+_ℕ (_*_ℕ x y) (_*_ℕ x z)
+    *-distrib-+ zero y z = refl
+    *-distrib-+ (suc x) y z = 
+      let ih : _*_ℕ x (_+_ℕ y z) ≡ _+_ℕ (_*_ℕ x y) (_*_ℕ x z)
+          ih = *-distrib-+ x y z
+          
+          step1 : _*_ℕ (suc x) (_+_ℕ y z) ≡ _+_ℕ (_+_ℕ y z) (_*_ℕ x (_+_ℕ y z))
+          step1 = refl
+          
+          step2 : _+_ℕ (_+_ℕ y z) (_*_ℕ x (_+_ℕ y z)) ≡ _+_ℕ (_+_ℕ y z) (_+_ℕ (_*_ℕ x y) (_*_ℕ x z))
+          step2 = cong (_+_ℕ (_+_ℕ y z)) ih
+          
+          step3 : _+_ℕ (_+_ℕ y z) (_+_ℕ (_*_ℕ x y) (_*_ℕ x z)) ≡ _+_ℕ y (_+_ℕ z (_+_ℕ (_*_ℕ x y) (_*_ℕ x z)))
+          step3 = +-assocℕ y z (_+_ℕ (_*_ℕ x y) (_*_ℕ x z))
+          
+          step4 : _+_ℕ y (_+_ℕ z (_+_ℕ (_*_ℕ x y) (_*_ℕ x z))) ≡ _+_ℕ y (_+_ℕ (_*_ℕ x y) (_+_ℕ z (_*_ℕ x z)))
+          step4 = cong (_+_ℕ y) (+-swap z (_*_ℕ x y) (_*_ℕ x z))
+          
+          step5 : _+_ℕ y (_+_ℕ (_*_ℕ x y) (_+_ℕ z (_*_ℕ x z))) ≡ _+_ℕ (_+_ℕ y (_*_ℕ x y)) (_+_ℕ z (_*_ℕ x z))
+          step5 = sym (+-assocℕ y (_*_ℕ x y) (_+_ℕ z (_*_ℕ x z)))
+      in step1 ∙ step2 ∙ step3 ∙ step4 ∙ step5
+
+    *-suc : (x y : ℕ) → _*_ℕ (suc x) y ≡ _+_ℕ y (_*_ℕ x y)
+    *-suc x y = refl
+
+    *-assocℕ : (x y z : ℕ) → (_*_ℕ x (_*_ℕ y z)) ≡ (_*_ℕ (_*_ℕ x y) z)
+    *-assocℕ zero y z = refl
+    *-assocℕ (suc x) y z = 
+      let ih = *-assocℕ x y z
+      in *-suc x (_*_ℕ y z) ∙ cong (_+_ℕ (_*_ℕ y z)) ih
+
+    1-left-neutralℕ : (x : ℕ) → (_*_ℕ (suc zero) x) ≡ x
+    1-left-neutralℕ zero = refl
+    1-left-neutralℕ (suc x) = 
+      let ih = 1-left-neutralℕ x
+      in cong suc ih
 
     -- For now, we'll postulate the remaining properties
     postulate
-      *-assocℕ : (x y z : ℕ) → (_*_ℕ x (_*_ℕ y z)) ≡ (_*_ℕ (_*_ℕ x y) z)
-      left-distribℕ : (x y z : ℕ) → (_*_ℕ x (_+_ℕ y z)) ≡ (_+_ℕ (_*_ℕ x y) (_*_ℕ x z))
       right-distribℕ : (x y z : ℕ) → (_*_ℕ (_+_ℕ x y) z) ≡ (_+_ℕ (_*_ℕ x z) (_*_ℕ y z))
       0-left-annihilatesℕ : (x : ℕ) → (_*_ℕ zero x) ≡ zero
-      1-left-neutralℕ : (x : ℕ) → (_*_ℕ (suc zero) x) ≡ x
 
 open NatProps public
 
@@ -153,7 +232,7 @@ semiringℕ = record
   ; +-assoc = +-assocℕ
   ; +-comm  = +-commℕ
   ; *-assoc = *-assocℕ
-  ; left-distrib  = left-distribℕ
+  ; left-distrib  = *-distrib-+
   ; right-distrib = right-distribℕ
   ; 0-left-annihilates = 0-left-annihilatesℕ
   ; 1-left-neutral = 1-left-neutralℕ
@@ -170,4 +249,4 @@ semiringBin = transport (λ i → Semiring (ua ℕ≃Bin i)) semiringℕ
 -- Step 9: Result
 ------------------------------------------------------------------------
 
--- Now semiringBin is a valid Semiring on Bin!
+-- Now semiringBin is a valid Semiring on Bin

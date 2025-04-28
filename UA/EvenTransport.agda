@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical #-}
 
-module EvenTransport where
+module UA.EvenTransport where
 
 open import Cubical.Core.Everything
 open import Cubical.Foundations.Prelude

@@ -27,5 +27,8 @@ isInvolution false = refl
 ourEquiv : Equiv Bool Bool
 ourEquiv = equiv not not isInvolution isInvolution
 
+
+-- try evaluating the following term (c-C, c-N), then 
+-- type  `ourTransport` and evaluate that.
 ourTransport : Bool → Bool
 ourTransport b = transport (ua ourEquiv) b  

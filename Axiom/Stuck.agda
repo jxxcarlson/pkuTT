@@ -11,6 +11,10 @@ double n = n + n
 postulate
     foo : ℕ → ℕ
 
+
+-- Try normalizing the following terms (c-C, c-N).  Some will fully
+evaluate, others are "stuck."
+
 t0 : ℕ
 t0 = inc 0
 
@@ -19,8 +23,6 @@ t1 = foo (inc 0)
 
 t2 : ℕ
 t2 = double 3
-
-
 
 t3 : ℕ
 t3 = foo (double 3)

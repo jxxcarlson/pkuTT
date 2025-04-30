@@ -12,10 +12,16 @@ Sketch of Hoffman-Strieicher's construction of a groupoid model for MLTT proving
 
 # Agda Files
 
+## Axiom
+
+- Stuck: 
+- UAStuck:
+
 ## Cubical
 
-- Basic: 
+- Basic: `Set-is-not-set` shows that the universe `Set` is not a set.
 - PlusIdentityRight: show that n + 0 = n for all n : N
+- FunExt
 
 ## HIT
 
@@ -30,19 +36,6 @@ and the equivalence `ℕ≃Bin` to produce a function `evenBin : Bin → Bool`. 
 - *SemiRingTransport*: `ℕ` is a semiring, meaning
 
 
-## Postulate
-
-### Stuck.agda
-
-Examples of stuck computations for N.
-
-### UAStuckExampleFixed.agda
-
-Using ua (univalence) to transport a Boolean value along a path fails to compute.
-
-
-
-# Agda Files
 
 
 

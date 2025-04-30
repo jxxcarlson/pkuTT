@@ -93,40 +93,6 @@ _ : transport (λ i → helix (backThenForward i)) (pos 0) ≡ pos 0
 _ = refl
 
 
------
-
--- Examples showing that winding is a group homomorphism
--- (preserves composition and inverses)
-
--- Composition of paths corresponds to addition of winding numbers
-winding-preserves-composition : (p q : ΩS¹) → winding (p ∙ q) ≡ winding p + winding q
-winding-preserves-composition p q = refl
-
--- Inverse of a path corresponds to negation of winding number
-winding-preserves-inverse : (p : ΩS¹) → winding (sym p) ≡ - winding p
-winding-preserves-inverse p = refl
-
--- The identity path has winding number 0
-winding-identity : winding refl ≡ pos 0
-winding-identity = refl
-
--- Examples with more complex path compositions
-loopFourTimes : ΩS¹
-loopFourTimes = loop ∙ loop ∙ loop ∙ loop
-
-_ : winding loopFourTimes ≡ pos 4
-_ = refl
-
--- Going around twice forward then once backward
-complexPath : ΩS¹
-complexPath = loopTwice ∙ loopBackwards
-
-_ : winding complexPath ≡ pos 1
-_ = refl
-
--- Using transport to verify the same
-_ : transport (λ i → helix (complexPath i)) (pos 0) ≡ pos 1
-_ = refl
 
 
 

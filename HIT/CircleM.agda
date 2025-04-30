@@ -4,13 +4,13 @@ module HIT.CircleM where
 
 open import Cubical.Core.Everything
 open import Cubical.Foundations.Prelude
+open import Cubical.Foundations.GroupoidLaws using (assoc; lUnit; rUnit)
 open import Cubical.Foundations.Equiv
 open import Cubical.Foundations.Univalence
 open import Cubical.Foundations.Isomorphism
---open import Data.Integer using (ℤ; +_; -[1+_]; _+_; _-_)
 open import Cubical.Data.Int 
 open import Cubical.Data.Int.Properties
-open import Data.Nat using (ℕ; zero; suc)
+open import Cubical.Data.Nat using (ℕ; zero; suc; _∸_)
 
 -- Define the circle as a HIT
 data S¹ : Set where
@@ -40,8 +40,6 @@ ex2 = refl
 
 ex3 : winding (sym loop) ≡ negsuc 0
 ex3 = refl
-
-
 
 -- 2. Going around the loop twice (corresponds to +2)
 loopTwice : ΩS¹
@@ -92,9 +90,34 @@ _ = refl
 _ : transport (λ i → helix (backThenForward i)) (pos 0) ≡ pos 0
 _ = refl
 
+-- Apply a function n times (for natural numbers)
+applyN : {A : Set} → ℕ → (A → A) → A → A
+applyN zero    f x = x
+applyN (suc n) f x = f (applyN n f x)
+
+-- Apply a function n times (for integers)
+applyZ : {A : Set} → ℤ → (A → A) → (A → A) → A → A
+applyZ (pos n)    f g x = applyN n f x
+applyZ (negsuc n) f g x = applyN (suc n) g x
+
+-- Examples of using applyZ
+_ : applyZ (pos 3) suc (λ x → x ∸ 1) 0 ≡ 3
+_ = refl
 
 
+-- Create a path that goes around the loop n times (for natural numbers)
+loopN : ℕ → ΩS¹
+loopN n = applyN n (λ p → p ∙ loop) refl
 
+-- Create a path that goes around the loop n times (for integers)
+loopZ : ℤ → ΩS¹
+loopZ n = applyZ n (λ p → p ∙ loop) (λ p → p ∙ sym loop) refl
 
+-- Verify winding numbers for loopZ
+winding-pos : (n : ℕ) → winding (loopZ (pos n)) ≡ pos n
+winding-pos zero = refl
+winding-pos (suc n) = cong sucℤ (winding-pos n)
 
-     
+winding-neg : (n : ℕ) → winding (loopZ (negsuc n)) ≡ negsuc n
+winding-neg zero = refl
+winding-neg (suc n) = cong predℤ (winding-neg n)

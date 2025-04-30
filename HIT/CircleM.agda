@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical #-}
 
-module CircleM where
+module HIT.CircleM where
 
 open import Cubical.Core.Everything
 open import Cubical.Foundations.Prelude
@@ -29,17 +29,17 @@ helix : S¹ → Set
 helix base = ℤ
 helix (loop i) = sucPathℤ i
 
-winding : base ≡ base  → ℤ  
+winding : ΩS¹  → ℤ  
 winding p = transport (λ i → helix (p i)) (pos 0)
 
-_ : winding loop ≡ pos 1
-_ = refl
+ex1 : winding loop ≡ pos 1
+ex1 = refl
 
-_ : winding (loop ∙ loop) ≡ pos 2
-_ = refl
+ex2 : winding (loop ∙ loop) ≡ pos 2
+ex2 = refl
 
-_ : winding (sym loop) ≡ negsuc 0
-_ = refl
+ex3 : winding (sym loop) ≡ negsuc 0
+ex3 = refl
 
 
 
@@ -63,6 +63,70 @@ computeTwice = refl
 -- Going backwards should give us -1
 computeBackwards : transport (λ i → helix (loopBackwards i)) (pos 0) ≡ negsuc 0
 computeBackwards = refl
+
+-- Examples with more complex path compositions
+loopThreeTimes : ΩS¹
+loopThreeTimes = loop ∙ loop ∙ loop
+
+_ : winding loopThreeTimes ≡ pos 3
+_ = refl
+
+-- Going forward then backward
+forwardThenBack : ΩS¹
+forwardThenBack = loop ∙ sym loop
+
+_ : winding forwardThenBack ≡ pos 0
+_ = refl
+
+-- Going backward then forward
+backThenForward : ΩS¹
+backThenForward = sym loop ∙ loop
+
+_ : winding backThenForward ≡ pos 0
+_ = refl
+
+-- Using transport to show the same
+_ : transport (λ i → helix (forwardThenBack i)) (pos 0) ≡ pos 0
+_ = refl
+
+_ : transport (λ i → helix (backThenForward i)) (pos 0) ≡ pos 0
+_ = refl
+
+
+-----
+
+-- Examples showing that winding is a group homomorphism
+-- (preserves composition and inverses)
+
+-- Composition of paths corresponds to addition of winding numbers
+winding-preserves-composition : (p q : ΩS¹) → winding (p ∙ q) ≡ winding p + winding q
+winding-preserves-composition p q = refl
+
+-- Inverse of a path corresponds to negation of winding number
+winding-preserves-inverse : (p : ΩS¹) → winding (sym p) ≡ - winding p
+winding-preserves-inverse p = refl
+
+-- The identity path has winding number 0
+winding-identity : winding refl ≡ pos 0
+winding-identity = refl
+
+-- Examples with more complex path compositions
+loopFourTimes : ΩS¹
+loopFourTimes = loop ∙ loop ∙ loop ∙ loop
+
+_ : winding loopFourTimes ≡ pos 4
+_ = refl
+
+-- Going around twice forward then once backward
+complexPath : ΩS¹
+complexPath = loopTwice ∙ loopBackwards
+
+_ : winding complexPath ≡ pos 1
+_ = refl
+
+-- Using transport to verify the same
+_ : transport (λ i → helix (complexPath i)) (pos 0) ≡ pos 1
+_ = refl
 
 
 

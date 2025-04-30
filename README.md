@@ -2,7 +2,7 @@
 
 
 
-- Annotated list of Agda programs, all which sucessfully type-check using Agda version 2.8.0-47e7dcb.
+- Annotated list of Agda programs, all which sucessfully type-check using Agda version 2.8.0-47e7dcb.  Many composed with AI assistance (ChatGPT, Claude 3.7 Sonnet)
 
 # PDF Files
 
@@ -16,6 +16,11 @@ Sketch of Hoffman-Strieicher's construction of a groupoid model for MLTT proving
 
 - Basic: 
 - PlusIdentityRight: show that n + 0 = n for all n : N
+
+## HIT
+
+- CirclePi1EqZ1: construct `winding : ΩS¹ → ℤ` and `loopZ : ℤ → ΩS¹`
+- CirclePi1EqZ2: show that `winding : ΩS¹ → ℤ` and `loopZ : ℤ → ΩS¹` are mutually inverse, then show that `π₁S¹≡ℤ : ΩS¹ ≡ ℤ`
 
 ## UA
 

@@ -29,7 +29,16 @@ ex2 = apply0 Bool nonConstPath  -- This will be true
 ex3 : Bool
 ex3 = apply1 Bool nonConstPath  -- This will be false
 
+-- A path from true to true
+truePath : true ≡ true
+truePath i = transp (λ j → Bool) i true
 
+-- Example using the path
+ex4 : Bool
+ex4 = truePath i0  -- This will be true
+
+ex5 : Bool
+ex5 = truePath i1  -- This will be true
 
 myPath : { A : Set } (x : A) → x ≡ x
 myPath x = λ i → x
@@ -47,10 +56,6 @@ funExt p i x = p x i
 
 sym : { x y : A } → x ≡ y → y ≡ x
 sym p i = p (~ i)
-
--- A simple path from true to true
-truePath : true ≡ true
-truePath = λ i → true
 
 -- Path concatenation example
 -- Concatenating a path with its symmetric path
